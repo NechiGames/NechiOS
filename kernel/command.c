@@ -5,9 +5,9 @@ void execute_command(char *cmd)
 {
     if (strcmp(cmd, "help") == 0)
     {
-        print("============================");
-        print("      HELP INFORMATION      ");
-        print("============================");
+        print("\n\n============================\n");
+        print("      HELP INFORMATION      \n");
+        print("============================\n");
         print("help  - show commans\n");
         print("clear - clear screen\n");
         print("echo  - test command\n");
@@ -19,10 +19,10 @@ void execute_command(char *cmd)
     }
     else if (strcmp(cmd, "echo") == 0)
     {
-        print("Test command: HELLO BRO!");
+        print("Test command: HELLO BRO!\n");
     }
     else
     {
-        print("Unknown command :(");
+        print("Unknown command\n");
     }
 }
