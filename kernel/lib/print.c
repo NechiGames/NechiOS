@@ -2,6 +2,7 @@
 
 int cursor_pos = 0;
 
+// Белый цвет
 void print_char(char c)
 {
     unsigned short *vga = (unsigned short *)0xB8000;
@@ -25,6 +26,7 @@ void print(const char *str)
     }
 }
 
+// Очистка экрана
 void clear_screen()
 {
     unsigned short *VGA = (unsigned short*)0xB8000;
@@ -35,6 +37,7 @@ void clear_screen()
     cursor_pos = 0;
 }
 
+// Backspace
 void backspace()
 {
     unsigned short *VGA = (unsigned short*)0xB8000;
