@@ -2,7 +2,7 @@ AN = nasm
 GCC = gcc
 LD = ld
 
-CFLAGS = -m32 -ffreestanding -c
+CFLAGS = -m32 -ffreestanding -c -I.
 LDFLAGS = -m elf_i386 -T
 
 clean:
@@ -11,7 +11,8 @@ clean:
 all:
 	$(AN) -f elf32 multiboot/boot.asm -o boot.o
 	$(GCC) $(CFLAGS) kernel/kernel.c -o kernel.o
-	$(LD) $(LDFLAGS) linker.ld -o kernel.bin boot.o kernel.o
+	$(GCC) $(CFLAGS) kernel/lib/print.c -o print.o
+	$(LD) $(LDFLAGS) linker.ld -o kernel.bin boot.o kernel.o print.o
 	mkdir -p iso/boot
 	cp kernel.bin iso/boot/kernel.bin
 	grub-mkrescue -o NechiOS.iso iso
