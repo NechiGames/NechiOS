@@ -31,7 +31,7 @@ void shell_run()
                 continue;
             }
 
-            if (pos < 225 && c)
+            if (pos < 255 && c)
             {
                 command[pos++] = c;
                 print_char(c);

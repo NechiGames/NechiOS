@@ -5,12 +5,12 @@ void execute_command(char *cmd)
 {
     if (strcmp(cmd, "help") == 0)
     {
-        print("\n\n============================\n");
-        print("      HELP INFORMATION      \n");
-        print("============================\n");
-        print("help  - show commans\n");
+        print("\n====================\n");
+        print(" HELP\n");
+        print("====================\n");
+        print("help  - commands\n");
         print("clear - clear screen\n");
-        print("echo  - test command\n");
+        print("echo  - test\n");
     }
     else if (strcmp(cmd, "clear") == 0)
     {
@@ -19,7 +19,7 @@ void execute_command(char *cmd)
     }
     else if (strcmp(cmd, "echo") == 0)
     {
-        print("Test command: HELLO BRO!\n");
+        print("Hello from OS!\n");
     }
     else
     {

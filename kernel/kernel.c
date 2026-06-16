@@ -10,12 +10,8 @@ void kernel_main()
 
     terminal_init();
 
+    shell_run();
+
     while (1)
-    {
-<<<<<<< HEAD
-        shell_run();
-=======
-        update_cursor_blink();
->>>>>>> main
-    }
+        ;
 }
