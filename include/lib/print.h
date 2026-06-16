@@ -1,11 +1,13 @@
 #pragma once
 
+// Печать символы
 void print_char(char c);
+
+// Печатать строки
 void print(const char *str);
 
-static inline void outb(unsigned short port, unsigned char val);
-void set_cursor(int pos);
-
+// Очистка экрана
 void clear_screen();
 
+// Backspace логика
 void backspace();

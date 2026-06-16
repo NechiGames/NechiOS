@@ -1,5 +1,4 @@
 #include "include/keyboard/keyboard.h"
-#include "include/keyboard/keyboard_waiting.h"
 
 static char keymap[128] =
     {
@@ -63,14 +62,45 @@ static char keymap[128] =
         ' ', // Space
 };
 
-char keyboard_get_char()
+// inb
+static inline unsigned char inb(unsigned short port)
+{
+    unsigned char ret;
+    __asm__ volatile ("inb %1, %0"
+                      : "=a"(ret)         
+                      : "Nd"(port));
+
+    return ret;
+}
+
+// Чтение scancode
+unsigned char keyboard_get_key(void)
+{
+    unsigned char status;
+    unsigned char keycode;
+
+    while (1)
+    {
+        status = inb(0x64);
+
+        if (status & 1)
+        {
+            keycode = inb(0x60);
+            return keycode;
+        }
+    }
+}
+
+// Перевод в char
+char keyboard_get_char(void)
 {
     unsigned char scancode;
 
     while (1)
     {
-        scancode = keyboard_get_key();
-
+        scancode = keyboard_get_key();     
+        
+        // Только key press
         if (!(scancode & 0x80))
         {
             char c = keymap[scancode];
@@ -78,7 +108,5 @@ char keyboard_get_char()
             if (c)
                 return c;
         }
-
-        
     }
-}
+} 

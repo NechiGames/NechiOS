@@ -1,5 +1,5 @@
 #pragma once
 
-unsigned char keyboard_get_key();
+char wait_any_key(void);
 
-void wait_any_key();
+char keyboard_get_char(void);

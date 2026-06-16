@@ -25,10 +25,10 @@ void print(const char *str)
     }
 }
 
-#define VGA ((unsigned short *)0xB8000)
-
 void clear_screen()
 {
+    unsigned short *VGA = (unsigned short*)0xB8000;
+
     for (int i = 0; i < 80 * 25; i++)
         VGA[i] = (0x07 << 8) | ' ';
 
@@ -37,9 +37,11 @@ void clear_screen()
 
 void backspace()
 {
+    unsigned short *VGA = (unsigned short*)0xB8000;
+
     if (cursor_pos > 0)
     {
         cursor_pos--;
-        ((unsigned short *)0xB8000)[cursor_pos] = (0x07 << 8) | ' ';
+        VGA[cursor_pos] = (0x07 << 8) | ' ';
     }
 }

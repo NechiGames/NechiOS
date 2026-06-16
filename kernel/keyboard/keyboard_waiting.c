@@ -1,34 +1,8 @@
 #include "include/keyboard/keyboard_waiting.h"
+#include "include/keyboard/keyboard.h"
 
-static inline unsigned char inb(unsigned short port)
+// Ждем любую клавишу, типа: Press any key to continue...
+char wait_any_key(void)
 {
-    unsigned char ret;
-    __asm__ volatile("inb %1, %0"
-                     : "=a"(ret)
-                     : "Nd"(port));
-    return ret;
+    return keyboard_get_char();
 }
-
-unsigned char keyboard_get_key()
-{
-    unsigned char status;
-    unsigned char keycode;
-
-    while (1)
-    {
-        status = inb(0x64);
-
-        if (status & 1)
-        {
-            keycode = inb(0x60);
-            return keycode;
-        }
-    }
-}
-
-// по типу: Press any key to continue...
-void wait_any_key()
-{
-    keyboard_get_key();
-}
-
