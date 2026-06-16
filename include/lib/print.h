@@ -11,3 +11,6 @@ void clear_screen();
 
 // Backspace логика
 void backspace();
+
+// Мигающий курсор
+void update_cursor_blink();

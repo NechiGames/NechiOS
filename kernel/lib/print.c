@@ -2,6 +2,9 @@
 
 int cursor_pos = 0;
 
+int cursor_visible = 1;
+int blink_counter = 0;
+
 // Белый цвет
 void print_char(char c)
 {
@@ -46,5 +49,26 @@ void backspace()
     {
         cursor_pos--;
         VGA[cursor_pos] = (0x07 << 8) | ' ';
+    }
+}
+
+// Blinking Cursor
+void update_cursor_blink()
+{
+    unsigned short *vga = (unsigned short *)0xB8000;
+
+    blink_counter++;
+
+    if (blink_counter > 50000)
+    {
+        blink_counter = 0;
+        cursor_visible = !cursor_visible;
+
+        int pos = cursor_pos;
+
+        if (cursor_visible)
+            vga[pos] = (0x07 << 8) | '_';
+        else
+            vga[pos] = (0x07 << 8) | ' ';
     }
 }

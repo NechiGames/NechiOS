@@ -11,5 +11,8 @@ void kernel_main()
     terminal_init();
     shell_run();
 
-    while (1);
+    while (1)
+    {
+        update_cursor_blink();
+    }
 }
