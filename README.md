@@ -4,7 +4,7 @@
 
 ---
 
-About the Project
+# About the Project
 
 NechiOS is an operating system developed from scratch by me.
 The main goals of the project:
@@ -15,7 +15,7 @@ The main goals of the project:
 
 ---
 
-Current Status
+# Current Status
 
 The project is currently in an early stage of development.
 
@@ -39,7 +39,7 @@ Planned Features
 
 ---
 
-🛠 Requirements
+# 🛠 Requirements
 
 To build NechiOS, you will need:
 
@@ -50,7 +50,7 @@ nasm
 grub
 make
 
-🔧 Installing Tools
+# 🔧 Installing Tools
 
 Ubuntu / Debian / WSL
 
@@ -71,19 +71,19 @@ grub-mkrescue --version
 
 ---
 
-Arch Linux
+## Arch Linux
 
 sudo pacman -S gcc nasm grub xorriso qemu make
 
 ---
 
-Fedora
+## Fedora
 
 sudo dnf install gcc nasm grub2-tools xorriso qemu-system-x86 make
 
 ---
 
-Windows
+## Windows
 
 Using WSL (Windows Subsystem for Linux) is recommended.
 
@@ -97,7 +97,7 @@ wsl --install
 
 ---
 
-Verification
+# Verification
 
 After installing all dependencies, run:
 
@@ -108,7 +108,7 @@ If the system starts in QEMU, everything is configured correctly.
 
 ---
 
-📦 Building
+# 📦 Building
 
 Create an ISO image:
 
@@ -124,7 +124,7 @@ make clean
 
 ---
 
-🤝 Contributing
+# 🤝 Contributing
 
 If you are interested in operating system development, low-level programming in C and Assembly, contributions are welcome.
 
@@ -139,7 +139,7 @@ All contributors will be listed in a separate file in the project.
 
 ---
 
-Author
+# Author
 
 Development started on June 16, 2026.
 
