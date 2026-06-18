@@ -17,9 +17,10 @@ void execute_command(char *cmd)
         clear_screen();
         print("NechiOS\n");
     }
-    else if (strcmp(cmd, "echo") == 0)
+    else if (strncmp(cmd, "echo ",5) == 0)
     {
-        print("Hello from OS!\n");
+        print(&cmd[5]);
+        print("\n");
     }
     else
     {
