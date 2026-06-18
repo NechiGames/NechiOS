@@ -1,0 +1,55 @@
+name: Build and Test NechiOS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            build-essential \
+            gcc \
+            nasm \
+            xorriso \
+            grub-pc-bin \
+            grub-common \
+            qemu-system-x86
+
+      - name: Build NechiOS
+        run: |
+          make
+
+      - name: Verify Multiboot
+        run: |
+          grub-file --is-x86-multiboot kernel.elf
+
+      - name: Boot test in QEMU
+        run: |
+          timeout 10s qemu-system-i386 \
+            -cdrom NechiOS.iso \
+            -nographic \
+            -serial stdio || true
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: NechiOS-ISO
+          path: NechiOS.iso
+
+      - name: Upload Kernel
+        uses: actions/upload-artifact@v4
+        with:
+          name: NechiOS-Kernel
+          path: kernel.elf

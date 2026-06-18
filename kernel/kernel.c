@@ -10,8 +10,8 @@ void kernel_main()
 
     terminal_init();
 
-    shell_run();
-
     while (1)
-        ;
+    {
+        shell_run();
+    }
 }
