@@ -21,6 +21,8 @@ void execute_command(char *cmd)
     {
         print(&cmd[5]);
         print("\n");
+    }else if(strcasecmp(cmd,"who are you")==0){
+        print("Nechi\n");
     }
     else
     {
