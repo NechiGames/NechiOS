@@ -5,7 +5,7 @@ LD = ld
 CFLAGS = -m32 -ffreestanding -c -I.
 LDFLAGS = -m elf_i386 -T
 
-OBJS = boot.o gdt.o kernel.o print.o keyboard.o string.o terminal.o shell.o command.o restart.o
+OBJS = boot.o gdt.o kernel.o print.o keyboard.o string.o terminal.o shell.o command.o restart.o shutdown.o
 
 clean:
 	rm *.o *.bin *.iso
@@ -22,6 +22,7 @@ all:
 	$(GCC) $(CFLAGS) kernel/terminal.c -o terminal.o
 	$(GCC) $(CFLAGS) kernel/command.c -o command.o
 	$(GCC) $(CFLAGS) kernel/componentsOS/RESTART/restart.c -o restart.o
+	$(GCC) $(CFLAGS) kernel/componentsOS/SHUTDOWN/shutdown.c -o shutdown.o
 
 	$(LD) $(LDFLAGS) linker.ld -o kernel.bin $(OBJS)
 
