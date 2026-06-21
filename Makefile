@@ -1,34 +1,47 @@
 AN = nasm
-GCC = gcc
+CC = gcc
 LD = ld
 
 CFLAGS = -m32 -ffreestanding -c -I.
-LDFLAGS = -m elf_i386 -T
+LDFLAGS = -m elf_i386 -T linker.ld
 
-OBJS = boot.o gdt.o kernel.o print.o keyboard.o string.o terminal.o shell.o command.o restart.o shutdown.o
+ASM_SRC = \
+	multiboot/boot.asm \
+	multiboot/gdt.asm
 
-clean:
-	rm *.o *.bin *.iso
+C_SRC = \
+	kernel/kernel.c \
+	kernel/lib/print.c \
+	kernel/drivers/keyboard/keyboard.c \
+	kernel/lib/string.c \
+	kernel/shell.c \
+	kernel/terminal.c \
+	kernel/command.c \
+	kernel/componentsOS/RESTART/restart.c \
+	kernel/componentsOS/SHUTDOWN/shutdown.c
 
-all:
-	$(AN) -f elf32 multiboot/boot.asm -o boot.o
-	$(AN) -f elf32 multiboot/gdt.asm -o gdt.o
+OBJS = $(ASM_SRC:.asm=.o) $(C_SRC:.c=.o)
 
-	$(GCC) $(CFLAGS) kernel/kernel.c -o kernel.o
-	$(GCC) $(CFLAGS) kernel/lib/print.c -o print.o
-	$(GCC) $(CFLAGS) kernel/keyboard/keyboard.c -o keyboard.o
-	$(GCC) $(CFLAGS) kernel/lib/string.c -o string.o
-	$(GCC) $(CFLAGS) kernel/shell.c -o shell.o
-	$(GCC) $(CFLAGS) kernel/terminal.c -o terminal.o
-	$(GCC) $(CFLAGS) kernel/command.c -o command.o
-	$(GCC) $(CFLAGS) kernel/componentsOS/RESTART/restart.c -o restart.o
-	$(GCC) $(CFLAGS) kernel/componentsOS/SHUTDOWN/shutdown.c -o shutdown.o
+all: NechiOS.iso
 
-	$(LD) $(LDFLAGS) linker.ld -o kernel.bin $(OBJS)
-
+NechiOS.iso: kernel.bin
 	mkdir -p iso/boot
 	cp kernel.bin iso/boot/kernel.bin
-	grub-mkrescue -o NechiOS.iso iso
+	grub-mkrescue -o $@ iso
 
-run:
+kernel.bin: $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS)
+
+%.o: %.asm
+	$(AN) -f elf32 $< -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) $< -o $@
+
+run: NechiOS.iso
 	qemu-system-i386 -cdrom NechiOS.iso
+
+clean:
+	rm -f $(OBJS) kernel.bin NechiOS.iso
+
+.PHONY: all run clean

@@ -1,17 +1,19 @@
 #pragma once
 
-// Печать символы
+/*
+Оставлю пока без комментариев т.к. довольно легко-читаемы
+*/
+
 void print_char(char c);
 
-// Печатать строки
 void print(const char *str);
 
-// Очистка экрана
 void clear_screen();
 
-// Backspace логика
 void backspace();
-
 
 void move_cursor(int pos);
 
+void print_int(int num);
+
+void scroll();
