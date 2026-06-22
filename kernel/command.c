@@ -4,22 +4,26 @@
 #include "include/componentsOS/RESTART/restart.h"
 #include "include/componentsOS/SHUTDOWN/shutdown.h"
 
+char username[32] = "Nechi";
+
 void execute_command(char *cmd)
 {
     if (strcmp(cmd, "help") == 0)
     {
-        print("+--------------------------------------+\n");
-        print("|              NechiOS Help            |\n");
-        print("+--------------------------------------+\n");
-        print("| help      - show commands            |\n");
-        print("| clear     - clear screen             |\n");
-        print("| echo      - print text               |\n");
-        print("| whoami    - who are you              |\n");
-        print("| restart   - restart system           |\n");
-        print("| shutdown  - power off PC             |\n");
-        print("| -v        - show OS version          |\n");
-        print("| calc      - mini calculator          |\n");
-        print("+--------------------------------------+\n");
+        print("+---------------------------------------------+\n");
+        print("|               NechiOS Help                  |\n");
+        print("+---------------------------------------------+\n");
+        print("| help               - show commands          |\n");
+        print("| clear              - clear screen           |\n");
+        print("| echo               - print text             |\n");
+        print("| whoami             - who are you            |\n");
+        print("| restart            - restart system         |\n");
+        print("| shutdown           - power off PC           |\n");
+        print("| -v                 - show OS version        |\n");
+        print("| calc 'a' 'op' 'b'  - mini calculator        |\n");
+        print("| login 'name'       - your name              |\n");
+        print("| login return       - return to default name |\n");
+        print("+---------------------------------------------+\n");
     }
 
     else if (strcmp(cmd, "clear") == 0)
@@ -36,7 +40,8 @@ void execute_command(char *cmd)
 
     else if (strcasecmp(cmd, "whoami") == 0)
     {
-        print("Nechi\n");
+        print(username);
+        print("\n");
     }
 
     else if (strcmp(cmd, "restart") == 0)
@@ -97,6 +102,23 @@ void execute_command(char *cmd)
 
         print_int(result);
         print("\n");
+    }
+
+    else if (strncmp(cmd, "login ", 6) == 0)
+    {
+        strcpy(username, &cmd[6]);
+
+        if (strcmp(&cmd[6], "return") == 0)
+        {
+            strcpy(username, "Nechi");
+            print("Returned to default user name\n");
+        }
+        else
+        {
+            print("Logged in as ");
+            print(username);
+            print("\n");
+        }
     }
 
     else
