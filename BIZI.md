@@ -132,7 +132,7 @@ void handle_mov(const char *arg, FILE *boot) {
 
 ```
 2. **In the `commands.h` file**, register its prototype:
-   ```c
+c
    void handle_mov(const char *arg, FILE *boot);
 
 ```
@@ -153,7 +153,6 @@ static Command cmd_table[] = {
 ### TERMINAL COMMANDS
 
 1. `bizi -v` - displays the **specific version** of the compiler
-\```
 
 
 ```
