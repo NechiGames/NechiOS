@@ -29,7 +29,6 @@ void execute_command(char *cmd)
     else if (strcmp(cmd, "clear") == 0)
     {
         clear_screen();
-        print("NechiOS\n");
     }
 
     else if (strncmp(cmd, "echo ",5) == 0)

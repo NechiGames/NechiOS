@@ -12,7 +12,8 @@ void shell_run()
     {
         int pos = 0;
 
-        print("> ");
+        print("NechiOS@");
+        print("< ");
 
         while (1)
         {
