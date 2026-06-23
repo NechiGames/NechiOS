@@ -7,10 +7,10 @@ section .text
 global _start
 extern kernel_main
 ST:
-_start:
 call kernel_main
 loop:
 cli
 hlt
 jmp loop
+; new update :)
 ; This is my lang btw ;)
