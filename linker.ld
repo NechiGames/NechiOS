@@ -4,24 +4,33 @@ SECTIONS
 {
     . = 1M;
 
-    .text :
+    .text : ALIGN(4K)
     {
         *(.multiboot)
         *(.text)
+        *(.text.*)
     }
 
-    .rodata :
+    .rodata : ALIGN(4K)
     {
         *(.rodata)
+        *(.rodata.*)
     }
 
-    .data :
+    .data : ALIGN(4K)
     {
         *(.data)
+        *(.data.*)
     }
 
-    .bss :
+    .bss : ALIGN(4K)
     {
+        sbss = .;     
+        *(.COMMON)
         *(.bss)
+        *(.bss.*)
+        ebss = .;    
     }
+
+    _kernel_end = .;
 }
