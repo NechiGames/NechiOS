@@ -1,119 +1,125 @@
-# Bizi Compiler — Низкоуровневый Компилятор
+````markdown
+# Bizi Compiler — Low-Level Compiler
 
-Bizi — это модульный компилятор, разработанный для трансляции кастомного синтаксиса `.bizi` в стандартный ассемблерный код Intel x86 (NASM), поддерживающий стандарт загрузки **Multiboot**.
+Bizi is a modular compiler designed to translate a custom `.bizi` syntax into standard Intel x86 assembly code (NASM), supporting the **Multiboot** boot standard.
 
-## 📥 Как скачать и установить
+## 📥 Download and Installation
 
-Вы можете скачать, собрать и установить компилятор `bizi` как системную утилиту, чтобы вызывать её из любой папки.
+You can download, build, and install the `bizi` compiler as a system utility so it can be used from any directory.
 
-### 1. Клонирование репозитория и переход в папку
-Откройте терминал и выполните команды:
+### 1. Clone the repository and enter the folder
 ```bash
 git clone https://github.com
 cd bizi
-```
+````
 
-### 2. Сборка компилятора
-Скомпилируйте исходные файлы на C:
+### 2. Build the compiler
+
 ```bash
 gcc bizi.c codegen.c commands.c -o bizi
 ```
 
-### 3. Установка в систему (Глобальный доступ)
-Скопируйте исполняемый файл в директорию `/usr/local/bin/`. Это позволит запускать команду `bizi` в любом месте терминала без указания пути `./`:
+### 3. Install globally
+
 ```bash
 sudo cp bizi /usr/local/bin/
 ```
 
-### 4. Проверка установки
-Теперь вы можете проверить работу компилятора из любой папки вашего компьютера:
+### 4. Check installation
+
 ```bash
 bizi
 ```
-Если всё сделано правильно, утилита выведет инструкцию по использованию (`Usage:...`).
 
+---
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### 1. Компиляция самого компилятора
-Соберите проект из исходных файлов на C с помощью `gcc`:
+### Build compiler
+
 ```bash
 gcc bizi.c codegen.c commands.c -o bizi
 ```
 
-### . Двухэтапный процесс сборки вашего кода
+### Two-stage compilation
 
-Компилятор работает в двух режимах в зависимости от флагов:
-
-**Шаг 1: Генерация промежуточного файла (`-o`)**
-Анализирует исходный код и создает оптимизированный промежуточный файл кода.
 ```bash
 bizi bizi/mboot.bizi -o out
-```
-
-**Шаг 2: Генерация финального ассемблера (`-a`)**
-Преобразует промежуточный файл в готовый `.asm` файл. Если папка назначения (например, `multiboot/`) не существует, компилятор создаст её автоматически.
-```bash
 bizi out -a multiboot/boot.asm
 ```
 
 ---
 
-## 📝 Синтаксис языка Bizi
+## 📝 Bizi Language Syntax
 
-Файлы с расширением `.bizi` поддерживают набор команд для управления структурой бинарника ядра и низкоуровневыми инструкциями процессора.
-
-| Команда в `.bizi` | Результат в `.asm` (NASM) | Описание |
-| :--- | :--- | :--- |
-| `multiboot` | `section .multiboot` | Секция заголовка Multiboot |
-| `stext` | `section .text` | Секция основного кода |
-| `globalST` | `global _start` | Объявление глобальной точки входа |
-| `ST: ` | `_start:` | Метка начала выполнения программы |
-| `extern [имя]` | `extern [имя]` | Подключение внешней функции (например, из C) |
-| `call [имя]` | `call [имя]` | Вызов функции |
-| `jmp [метка]` | `jmp [метка]` | Безусловный переход |
-| `align [число]` | `align [число]` | Выравнивание данных в памяти |
-| `cli` | `cli` | Запрет аппаратных прерываний |
-| `hlt` | `hlt` | Остановка процессора |
-| `; [текст]` | `; [текст]` | Однострочный комментарий |
-| `[имя]:` | `[имя]:` | Произвольная пользовательская метка |
-
-### Особые аргументы для команды `dd` (Данные)
-Для упрощения создания Multiboot-ядра, команда `dd` автоматически рассчитывает магические структуры загрузчика:
-* `dd MAGIC` ➡️ Превращается в `dd 0x1BADB002` (Магическое число Multiboot)
-* `dd FLAG` ➡️ Превращается в `dd 0` (Флаги загрузки)
-* `dd CHECKSUM` ➡️ Превращается в `dd -(0x1BADB002)` (Контрольная сумма)
-* `dd [число]` ➡️ Превращается в `dd [число]` (Любое другое числовое значение)
+| Command       | NASM Output        | Description              |
+| ------------- | ------------------ | ------------------------ |
+| multiboot     | section .multiboot | Multiboot header section |
+| stext         | section .text      | Main code section        |
+| globalST      | global _start      | Entry point              |
+| ST:           | _start:            | Start label              |
+| extern [name] | extern [name]      | External function        |
+| call [name]   | call [name]        | Function call            |
+| jmp [label]   | jmp [label]        | Jump                     |
+| align [n]     | align [n]          | Alignment                |
+| cli           | cli                | Disable interrupts       |
+| hlt           | hlt                | Halt CPU                 |
+| ; text        | ; text             | Comment                  |
+| name:         | name:              | Label                    |
 
 ---
 
-## 🛠 Архитектура проекта
+## 🧠 dd rules
 
-Код компилятора разделен на изолированные модули, что позволяет легко добавлять новые команды без изменения логики парсера.
+* dd MAGIC → dd 0x1BADB002
+* dd FLAG → dd 0
+* dd CHECKSUM → dd -(0x1BADB002)
+* dd number → dd number
 
-```text
-├── bizi.c       # Точка входа. Управляет флагами (-o, -a) и режимами работы.
-├── codegen.c    # Движок парсера. Читает строки, управляет директориями и таблицей команд.
-├── commands.c   # Реализация команд. Каждая команда — изолированная функция.
-└── commands.h   # Заголовочный файл. Структура Command и прототипы функций.
+---
+
+## 🛠 Architecture
+
+```
+├── bizi.c
+├── codegen.c
+├── commands.c
+└── commands.h
 ```
 
-### Как добавить новую команду в компилятор?
+---
 
-1. **В файле `commands.c`** напишите функцию-обработчик:
-   ```c
-   void handle_mov(const char *arg, FILE *boot) {
-       fprintf(boot, "mov %s\n", arg);
-   }
-   ```
-2. **В файле `commands.h`** зарегистрируйте её прототип:
-   ```c
-   void handle_mov(const char *arg, FILE *boot);
-   ```
-3. **В файле `codegen.c`** добавьте ключевое слово и функцию в таблицу `cmd_table`:
-   ```c
-   static Command cmd_table[] = {
-       ...
-       {"mov ", handle_mov},
-   };
-   ```
+## ➕ Add command
+
+### commands.c
+
+```c
+void handle_mov(const char *arg, FILE *boot) {
+    fprintf(boot, "mov %s\n", arg);
+}
+```
+
+### commands.h
+
+```c
+void handle_mov(const char *arg, FILE *boot);
+```
+
+### codegen.c
+
+```c
+static Command cmd_table[] = {
+    {"mov ", handle_mov},
+};
+```
+
+---
+
+## 🖥 Commands
+
+```bash
+bizi -v
+```
+
+```
+```
