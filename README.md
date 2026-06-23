@@ -12,7 +12,8 @@
   <img src="https://img.shields.io/badge/Status-Early%20Development-yellow.svg">
 </p>
 
-> *A custom operating system built from scratch using C and Assembly.*
+> *A custom operating system built from scratch using C and Assembly.
+BIZI COMPILE TUTOR FOR CONTRIBUTERS - https://github.com/NechiGames/NechiOS/blob/main/BIZI.md*
 
 ---
 
